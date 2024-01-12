@@ -55,6 +55,14 @@ namespace UserTaskMananger.Service.Implementation
             }
         }
 
+        public async Task<int> GetTotal()
+        {
+            using (var connection = _unitOfWork.Create())
+            {
+                var total = await connection.Repository.UserTaskRepository.GetTotal();
+                return total;
+            }
+        }
         public async Task<bool> Update(int id, UserTaskRequest request)
         {
             using (var connection = _unitOfWork.Create())
