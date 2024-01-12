@@ -3,6 +3,7 @@
     public interface IServiceBase<TResponse, TRequest>
     {
         Task<IEnumerable<TResponse>> Get();
+        Task<int> GetTotal();
         Task<TResponse> FindById(int id);
         Task<bool> Create(TRequest request);
         Task<bool> Update(int id, TRequest request);
