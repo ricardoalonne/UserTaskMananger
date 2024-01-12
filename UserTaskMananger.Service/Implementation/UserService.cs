@@ -63,6 +63,17 @@ namespace UserTaskMananger.Service.Implementation
                 return total;
             }
         }
+
+        public async Task<IEnumerable<UserResumeResponse>> GetForResume()
+        {
+            using (var connection = _unitOfWork.Create())
+            {
+                var userEntities = await connection.Repository.UserRepository.Get();
+                var users = userEntities.Select(user => new UserResumeResponse(user));
+                return users;
+            }
+        }
+
         public async Task<bool> Update(int id, UserRequest request)
         {
             using (var connection = _unitOfWork.Create())
