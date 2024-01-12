@@ -6,5 +6,6 @@ namespace UserTaskMananger.Service.Structure
 {
     public interface IUserService : IServiceBase<UserResponse, UserRequest>
     {
+        Task<IEnumerable<UserResumeResponse>> GetForResume();
     }
 }
