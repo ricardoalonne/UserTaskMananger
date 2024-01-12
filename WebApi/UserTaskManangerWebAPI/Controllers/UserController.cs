@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UserTaskMananger.DTOs.Request;
+using UserTaskMananger.Service.Implementation;
 using UserTaskMananger.Service.Structure;
 
 namespace UserTaskManangerWebAPI.Controllers
@@ -40,6 +41,23 @@ namespace UserTaskManangerWebAPI.Controllers
                 var total = await _userService.GetTotal();
 
                 return Ok(total);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("for-resume")]
+        public async Task<IActionResult> GetForResume()
+        {
+            try
+            {
+                var users = await _userService.GetForResume();
+
+                if (users == null) return NoContent();
+
+                return Ok(users);
             }
             catch (Exception ex)
             {
@@ -98,7 +116,7 @@ namespace UserTaskManangerWebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id, [FromBody] UserRequest request)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
             {
