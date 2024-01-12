@@ -52,6 +52,15 @@ namespace UserTaskMananger.Service.Implementation
                 var priorities = priorityEntities.Select(priority => new PriorityResponse(priority));
                 return priorities;
             }
+        } 
+        
+        public async Task<int> GetTotal()
+        {
+            using (var connection = _unitOfWork.Create())
+            {
+                var total = await connection.Repository.PriorityRepository.GetTotal();
+                return total;
+            }
         }
 
         public async Task<bool> Update(int id, PriorityRequest request)
