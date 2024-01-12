@@ -12,8 +12,10 @@ namespace UserTaskMananger.DTOs.Response
         public DateTime ExpirationAt { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
-        public UserResponse User { get; set; }
-        public PriorityResponse Priority { get; set; }
+        public int UserId { get; set; }
+        public string UserFullName { get; set; }
+        public int PriorityId { get; set; }
+        public string PriorityName { get; set; }
 
         public UserTaskResponse()
         {
@@ -30,8 +32,10 @@ namespace UserTaskMananger.DTOs.Response
             this.ExpirationAt = entity.ExpirationAt;
             this.CreatedAt = entity.CreatedAt;
             this.UpdatedAt = entity.UpdatedAt;
-            this.User = new UserResponse(entity.User);
-            this.Priority = new PriorityResponse(entity.Priority);
+            this.UserId = entity.UserId;
+            this.UserFullName = $"{entity.User.Name} {entity.User.LastName}";
+            this.PriorityId = entity.PriorityId;
+            this.PriorityName = entity.Priority.Name;
         }
     }
 }

@@ -50,8 +50,8 @@ namespace UserTaskMananger.DTOs.Request
                 ExpirationAt = this.ExpirationAt,
                 CreatedAt = this.CreatedAt,
                 UpdatedAt = this.UpdatedAt,
-                User = new User() { Id = this.UserId },
-                Priority = new Priority() { Id = this.PriorityId },
+                UserId = this.UserId,
+                PriorityId = this.PriorityId,
             };
         }
     }
