@@ -27,8 +27,9 @@ namespace UserTaskMananger.DTOs.Request
 
         public void SetTimeOnCreation()
         {
-            CreatedAt = DateTime.Now;
-            UpdatedAt = DateTime.Now;
+            var currentDate = DateTime.Now;
+            CreatedAt = currentDate;
+            UpdatedAt = currentDate;
         }
 
         public void SetTimeOnUpdation()
