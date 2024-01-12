@@ -30,8 +30,8 @@ namespace UserTaskManangerWebAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
+        } 
+        
         [HttpGet("total")]
         public async Task<IActionResult> GetTotal()
         {
@@ -40,6 +40,23 @@ namespace UserTaskManangerWebAPI.Controllers
                 var total= await _userTaskService.GetTotal();
 
                 return Ok(total);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{userId}/mode/{mode}")]
+        public async Task<IActionResult> GetByMode([FromRoute] int userId = 0, [FromRoute] string mode = "all")
+        {
+            try
+            {
+                var userTasks = await _userTaskService.GetByUserIdAndMode(userId, mode);
+
+                if (userTasks == null) return NoContent();
+
+                return Ok(userTasks);
             }
             catch (Exception ex)
             {
@@ -90,6 +107,40 @@ namespace UserTaskManangerWebAPI.Controllers
                 var result = await _userTaskService.Update(id, request);
 
                 return result ? new ObjectResult(result) { StatusCode = StatusCodes.Status201Created } : BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("finish/{id}")]
+        public async Task<IActionResult> Finish([FromRoute] int id)
+        {
+            try
+            {
+                if (id <= 0) return new ObjectResult(id) { StatusCode = StatusCodes.Status304NotModified };
+
+                var result = await _userTaskService.Finish(id);
+
+                return result ? Ok(result) : BadRequest(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPatch("remove/{id}")]
+        public async Task<IActionResult> Remove([FromRoute] int id)
+        {
+            try
+            {
+                if (id <= 0) return new ObjectResult(id) { StatusCode = StatusCodes.Status304NotModified };
+
+                var result = await _userTaskService.Remove(id);
+
+                return result ? Ok(result) : BadRequest(result);
             }
             catch (Exception ex)
             {
