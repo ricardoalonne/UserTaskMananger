@@ -63,6 +63,17 @@ namespace UserTaskMananger.Service.Implementation
                 return total;
             }
         }
+
+        public async Task<IEnumerable<UserTaskResponse>> GetByUserIdAndMode(int userId, string mode)
+        {
+            using (var connection = _unitOfWork.Create())
+            {
+                var userTaskEntities = await connection.Repository.UserTaskRepository.GetByUserIdAndMode(userId,mode);
+                var userTasks = userTaskEntities.Select(userTask => new UserTaskResponse(userTask));
+                return userTasks;
+            }
+        }
+
         public async Task<bool> Update(int id, UserTaskRequest request)
         {
             using (var connection = _unitOfWork.Create())
@@ -71,6 +82,32 @@ namespace UserTaskMananger.Service.Implementation
                 var currentUserTaskEntity = await connection.Repository.UserTaskRepository.FindById(id);
                 var userTaskEntity = request.ToEntity();
                 currentUserTaskEntity.Copy(userTaskEntity);
+                connection.Repository.UserTaskRepository.Update(currentUserTaskEntity);
+                var result = await connection.SaveChanges();
+                return result > 0;
+            }
+        }
+
+        public async Task<bool> Remove(int id)
+        {
+            using (var connection = _unitOfWork.Create())
+            {
+                var currentUserTaskEntity = await connection.Repository.UserTaskRepository.FindById(id);
+                currentUserTaskEntity.Deleted = true;
+                currentUserTaskEntity.UpdatedAt = DateTime.Now;
+                connection.Repository.UserTaskRepository.Update(currentUserTaskEntity);
+                var result = await connection.SaveChanges();
+                return result > 0;
+            }
+        }
+        
+        public async Task<bool> Finish(int id)
+        {
+            using (var connection = _unitOfWork.Create())
+            {
+                var currentUserTaskEntity = await connection.Repository.UserTaskRepository.FindById(id);
+                currentUserTaskEntity.Finished = true;
+                currentUserTaskEntity.UpdatedAt = DateTime.Now;
                 connection.Repository.UserTaskRepository.Update(currentUserTaskEntity);
                 var result = await connection.SaveChanges();
                 return result > 0;
