@@ -6,7 +6,9 @@
         //Task Update(int id, T entity);
         void Update(T entity);
         Task Delete(int id);
+        IEnumerable<T> Find(Func<T, bool> isMatched);
         Task<T> FindById(int id);
         Task<IEnumerable<T>> Get();
+        Task<int> GetTotal();
     }
 }

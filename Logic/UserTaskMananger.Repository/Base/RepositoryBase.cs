@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Xml;
 using UserTaskMananger.Context;
 
 namespace UserTaskMananger.Repository.Base
@@ -29,6 +30,12 @@ namespace UserTaskMananger.Repository.Base
             _context.Remove(obj);
         }
 
+        public virtual IEnumerable<T> Find(Func<T, bool> predicate)
+        {
+            return _context.Set<T>().Where(predicate);
+        }
+
+
         public virtual async Task<T> FindById(int id)
         {
             return await _context.Set<T>().FindAsync(id);
@@ -37,6 +44,11 @@ namespace UserTaskMananger.Repository.Base
         public virtual async Task<IEnumerable<T>> Get()
         {
             return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task<int> GetTotal()
+        {
+            return await _context.Set<T>().CountAsync();
         }
     }
 }
