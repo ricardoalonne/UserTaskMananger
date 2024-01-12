@@ -23,6 +23,12 @@ namespace UserTaskMananger.Entities
         [Required]
         public DateTime UpdatedAt { get; set; }
         [Required]
+        public int UserId { get; set; }
+        [Required]
+        public int PriorityId { get; set; }
+
+
+        [Required]
         public User User { get; set; }
         [Required]
         public Priority Priority { get; set; }
@@ -35,8 +41,8 @@ namespace UserTaskMananger.Entities
             Deleted = userTask.Deleted;
             ExpirationAt = userTask.ExpirationAt;
             UpdatedAt = userTask.UpdatedAt;
-            User = userTask.User;
-            Priority = userTask.Priority;
+            UserId = userTask.UserId;
+            PriorityId = userTask.PriorityId;
         }
     }
 }
