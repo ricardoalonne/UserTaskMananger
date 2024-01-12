@@ -32,6 +32,21 @@ namespace UserTaskManangerWebAPI.Controllers
             }
         }
 
+        [HttpGet("total")]
+        public async Task<IActionResult> GetTotal()
+        {
+            try
+            {
+                var total= await _userTaskService.GetTotal();
+
+                return Ok(total);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
