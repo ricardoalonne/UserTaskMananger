@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using UserTaskMananger.DTOs.Request;
+using UserTaskMananger.Service.Implementation;
 using UserTaskMananger.Service.Structure;
 
 namespace UserTaskManangerWebAPI.Controllers
@@ -25,6 +26,21 @@ namespace UserTaskManangerWebAPI.Controllers
                 if (priorities == null) return NoContent();
 
                 return Ok(priorities);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("total")]
+        public async Task<IActionResult> GetTotal()
+        {
+            try
+            {
+                var total = await _priorityService.GetTotal();
+
+                return Ok(total);
             }
             catch (Exception ex)
             {
@@ -83,7 +99,7 @@ namespace UserTaskManangerWebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] int id, [FromBody] PriorityRequest request)
+        public async Task<IActionResult> Delete([FromRoute] int id)
         {
             try
             {
