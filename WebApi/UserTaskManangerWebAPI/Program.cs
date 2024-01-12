@@ -8,12 +8,26 @@ using UserTaskMananger.UnitOfWork.Structure;
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AppUserTestMananger", builder =>
+    {
+        builder.WithOrigins("http://localhost:4555")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+    }
+        );
+}
+);
+
 // Add services to the container.
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
 builder.Services.AddDbContext<UserTaskManangerDbContext>(options
     => options.UseSqlServer(connectionString, build =>
@@ -35,6 +49,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AppUserTestMananger");
 
 app.UseAuthorization();
 
